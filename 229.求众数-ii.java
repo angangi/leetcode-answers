@@ -17,21 +17,43 @@ import java.util.List;
 // @lc code=start
 class Solution {
     public List<Integer> majorityElement(int[] nums) {
-        List<Integer> result = new ArrayList<>();
-        HashMap<Integer,Integer> map = new HashMap<>();
+        List<Integer> result = new ArrayList<Integer>();
+        if(nums.length == 1) {
+            result.add(nums[0]);
+            return result;
+        };
+
+        int res0, res1;
+        int cnt0=0, cnt1=0;
+        res0 = nums[0];
+        res1 = nums[1];
+
         for (int i = 0; i < nums.length; i++) {
-            if(map.containsKey(nums[i])){
-                map.put(nums[i] ,map.get(nums[i])+1);
-            }else{
-                map.put(nums[i], 1);
+            if(nums[i] == res0) cnt0++;
+            else if(nums[i] == res1) cnt1++;
+            else if(cnt0==0) {
+                res0 = nums[i];
+                cnt0 = 1;
+            } else if(cnt1==0) {
+                res1 = nums[i];
+                cnt1 = 1;
+            } else {
+                cnt0--;
+                cnt1--;
             }
         }
-        for (Integer i : map.keySet()) {
-            if(map.get(i) > nums.length /3) {
-                result.add(i);
-            }
+
+        cnt0=cnt1=0;
+        for (int i=0;i<nums.length;++i){
+            if(nums[i] == res0) cnt0++;
+            else if(nums[i] == res1) cnt1++;
         }
+
+        if(cnt0 > nums.length / 3) result.add(res0);
+        if(cnt1 > nums.length / 3) result.add(res1);
+
         return result;
+        
     }
 }
 // @lc code=end
